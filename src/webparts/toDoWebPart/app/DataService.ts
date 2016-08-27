@@ -66,7 +66,7 @@ export default class DataService implements IDataService {
     }).then((digestResult: ng.IHttpPromiseCallbackArg<{ FormDigestValue: string }>): void => {
       const requestDigest: string = digestResult.data.FormDigestValue;
       const body: string = JSON.stringify({
-        '__metadata': { 'type': 'SP.Data.' + todoListName + 'ListItem' },
+        '__metadata': { 'type': 'SP.Data.' + todoListName.charAt(0).toUpperCase() + todoListName.slice(1) + 'ListItem' },
         'Title': todo
       });
       this.$http({
@@ -126,7 +126,7 @@ export default class DataService implements IDataService {
     }).then((digestResult: ng.IHttpPromiseCallbackArg<{ FormDigestValue: string }>): void => {
       const requestDigest: string = digestResult.data.FormDigestValue;
       const body: string = JSON.stringify({
-        '__metadata': { 'type': 'SP.Data.' + todoListName + 'ListItem' },
+        '__metadata': { 'type': 'SP.Data.' + todoListName.charAt(0).toUpperCase() + todoListName.slice(1) + 'ListItem' },
         'Status': done ? 'Completed' : 'Not started'
       });
       this.$http({
