@@ -30,7 +30,7 @@ This Web Part illustrates the following concepts on top of the SharePoint Framew
 
 - using Angular v1.x with TypeScript for building SharePoint Framework Client-Side Web Parts
 - using ngOfficeUIFabric for styling Angular v1.x Client-Side Web Parts
-- including Angular and ngOfficeUIFabric in the Web Part bundle
+- loading Angular and ngOfficeUIFabric from CDN
 - using a newer version of Office UI Fabric for styling Client-Side Web Parts
 - loading CSS stylesheets from CDN
 - communicating with SharePoint using the SharePoint REST API

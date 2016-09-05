@@ -1,49 +1,31 @@
 import { IDataService, ITodo } from './DataService';
 
 export default class HomeController {
+  public static $inject: string[] = ['DataService', '$window', '$rootScope'];
+
   public isLoading: boolean = false;
-  public newItem: string = null;
+  public newItem: string = undefined;
   public todoCollection: any[] = [];
-  private sharePointApi: string = null;
-  private todoListName: string = null;
+  private sharePointApi: string = undefined;
+  private todoListName: string = undefined;
   private hideFinishedTasks: boolean = false;
   private configurationNeeded: boolean = true;
 
-  public static $inject: string[] = ['DataService', '$window', '$rootScope'];
-
-  constructor(private dataService: IDataService, private $window: ng.IWindowService, private $rootScope: ng.IRootScopeService) {
+  constructor(private dataService: IDataService,
+              private $window: ng.IWindowService,
+              private $rootScope: ng.IRootScopeService) {
     const vm: HomeController = this;
-    this.init(null, null);
+    this.init(undefined, undefined);
 
-    $rootScope.$on('configurationChanged', (event: ng.IAngularEvent, args: { sharePointApi: string; todoListName: string; hideFinishedTasks: boolean }): void => {
+    $rootScope.$on('configurationChanged',
+      (event: ng.IAngularEvent,
+       args: {
+         sharePointApi: string;
+         todoListName: string;
+         hideFinishedTasks: boolean
+        }): void => {
       vm.init(args.sharePointApi, args.todoListName, args.hideFinishedTasks);
     });
-  }
-
-  private init(sharePointApi: string, todoListName: string, hideFinishedTasks?: boolean): void {
-    if (sharePointApi != null && sharePointApi.length > 0 &&
-      todoListName != null && todoListName.length > 0) {
-      this.sharePointApi = sharePointApi;
-      this.todoListName = todoListName;
-      this.hideFinishedTasks = hideFinishedTasks;
-      this.loadTodos();
-      this.configurationNeeded = false;
-    }
-    else {
-      this.configurationNeeded = true;
-    }
-  }
-
-  private loadTodos(): void {
-    const vm: HomeController = this;
-    this.isLoading = true;
-    this.dataService.getTodos(vm.sharePointApi, vm.todoListName, vm.hideFinishedTasks)
-      .then((todos: ITodo[]): void => {
-        vm.todoCollection = todos;
-      })
-      .finally((): void => {
-        vm.isLoading = false;
-      });
   }
 
   public todoKeyDown($event: any): void {
@@ -55,7 +37,7 @@ export default class HomeController {
 
       this.dataService.addTodo(this.newItem, vm.sharePointApi, vm.todoListName)
         .then((): void => {
-          this.newItem = null;
+          this.newItem = undefined;
           this.dataService.getTodos(vm.sharePointApi, vm.todoListName, vm.hideFinishedTasks)
             .then((todos: any[]): void => {
               this.todoCollection = todos;
@@ -115,6 +97,32 @@ export default class HomeController {
           .then((todos: any[]): void => {
             this.todoCollection = todos;
           });
+      });
+  }
+
+  private init(sharePointApi: string, todoListName: string, hideFinishedTasks?: boolean): void {
+    if (sharePointApi !== undefined && sharePointApi.length > 0 &&
+      todoListName !== undefined && todoListName.length > 0) {
+      this.sharePointApi = sharePointApi;
+      this.todoListName = todoListName;
+      this.hideFinishedTasks = hideFinishedTasks;
+      this.loadTodos();
+      this.configurationNeeded = false;
+    }
+    else {
+      this.configurationNeeded = true;
+    }
+  }
+
+  private loadTodos(): void {
+    const vm: HomeController = this;
+    this.isLoading = true;
+    this.dataService.getTodos(vm.sharePointApi, vm.todoListName, vm.hideFinishedTasks)
+      .then((todos: ITodo[]): void => {
+        vm.todoCollection = todos;
+      })
+      .finally((): void => {
+        vm.isLoading = false;
       });
   }
 }

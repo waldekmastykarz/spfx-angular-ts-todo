@@ -26,7 +26,8 @@ export default class DataService implements IDataService {
   public getTodos(sharePointApi: string, todoListName: string, hideFinishedTasks: boolean): ng.IPromise<ITodo[]> {
     const deferred: ng.IDeferred<ITodo[]> = this.$q.defer();
 
-    let url: string = sharePointApi + 'web/lists/getbytitle(\'' + todoListName + '\')/items?$select=Id,Title,Status&$orderby=ID desc';
+    let url: string =
+      `${sharePointApi}web/lists/getbytitle('${todoListName}')/items?$select=Id,Title,Status&$orderby=ID desc`;
 
     if (hideFinishedTasks === true) {
       url += "&$filter=Status ne 'Completed'";
@@ -66,7 +67,11 @@ export default class DataService implements IDataService {
     }).then((digestResult: ng.IHttpPromiseCallbackArg<{ FormDigestValue: string }>): void => {
       const requestDigest: string = digestResult.data.FormDigestValue;
       const body: string = JSON.stringify({
-        '__metadata': { 'type': 'SP.Data.' + todoListName.charAt(0).toUpperCase() + todoListName.slice(1) + 'ListItem' },
+        '__metadata': {
+          'type': 'SP.Data.' +
+            todoListName.charAt(0).toUpperCase() +
+            todoListName.slice(1) + 'ListItem'
+          },
         'Title': todo
       });
       this.$http({
@@ -126,7 +131,11 @@ export default class DataService implements IDataService {
     }).then((digestResult: ng.IHttpPromiseCallbackArg<{ FormDigestValue: string }>): void => {
       const requestDigest: string = digestResult.data.FormDigestValue;
       const body: string = JSON.stringify({
-        '__metadata': { 'type': 'SP.Data.' + todoListName.charAt(0).toUpperCase() + todoListName.slice(1) + 'ListItem' },
+        '__metadata': {
+          'type': 'SP.Data.' +
+            todoListName.charAt(0).toUpperCase() +
+            todoListName.slice(1) + 'ListItem'
+          },
         'Status': done ? 'Completed' : 'Not started'
       });
       this.$http({

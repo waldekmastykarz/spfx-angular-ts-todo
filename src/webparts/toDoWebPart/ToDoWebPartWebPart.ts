@@ -9,7 +9,7 @@ import {
 import ModuleLoader from '@microsoft/sp-module-loader';
 
 import styles from './ToDoWebPart.module.scss';
-import * as strings from 'mystrings';
+import * as strings from 'toDoStrings';
 import { IToDoWebPartWebPartProps } from './IToDoWebPartWebPartProps';
 
 import * as angular from 'angular';
@@ -38,7 +38,8 @@ export default class ToDoWebPartWebPart extends BaseClientSideWebPart<IToDoWebPa
         <uif-spinner>Loading...</uif-spinner>
       </div>
       <div id="entryform" ng-show="vm.isLoading === false">
-        <uif-textfield uif-label="New to do:" uif-underlined ng-model="vm.newItem" ng-keydown="vm.todoKeyDown($event)"></uif-textfield>
+        <uif-textfield uif-label="New to do:" uif-underlined ng-model="vm.newItem"
+        ng-keydown="vm.todoKeyDown($event)"></uif-textfield>
       </div>
       <uif-list id="items" ng-show="vm.isLoading === false" >
         <uif-list-item ng-repeat="todo in vm.todoCollection" uif-item="todo" ng-class="{'${styles.done}': todo.done}">
